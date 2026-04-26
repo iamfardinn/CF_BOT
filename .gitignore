@@ -1,0 +1,20 @@
+# Secrets — never commit these
+.env
+bot.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+
+# Data (state is regenerated automatically)
+data/state.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
