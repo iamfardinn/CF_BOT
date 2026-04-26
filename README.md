@@ -1,42 +1,42 @@
-# 🏆 Codeforces Contest Discord Bot
+# Codeforces Contest Discord Bot
 
 A production-ready Discord bot that automatically notifies your server about upcoming and ongoing Codeforces contests.
 
 ---
 
-## ✨ Features
+## Features
 
 | Feature | Detail |
 |---|---|
-| ⏰ 1-Hour Warning | Sends a rich embed 1 hour before a contest begins |
-| 🚀 Contest Started | Fires immediately when a contest goes live |
-| 🔴 Ongoing Detection | Catches contests already running |
-| 🎨 Division Colours | Unique colour per division (Div. 1, 2, 3, 4, Educational, Global Round) |
-| 🔕 No Duplicates | `data/state.json` tracks sent notifications across restarts |
-| 🌍 Auto Timezones | Uses Discord's `<t:UNIX:F>` timestamps — every user sees their local time |
-| 📌 Slash Commands | `/next_contest`, `/ongoing`, `/help_cf` |
-| 🔔 Role Mentions | Optional per-division role pings via `.env` |
+| 1-Hour Warning | Sends a rich embed 1 hour before a contest begins |
+| Contest Started | Fires immediately when a contest goes live |
+| Ongoing Detection | Catches contests already running |
+| Division Colours | Unique colour per division (Div. 1, 2, 3, 4, Educational, Global Round) |
+| No Duplicates | `data/state.json` tracks sent notifications across restarts |
+| Auto Timezones | Uses Discord's `<t:UNIX:F>` timestamps — every user sees their local time |
+| Slash Commands | `/next_contest`, `/ongoing`, `/help_cf` |
+| Role Mentions | Optional per-division role pings via `.env` |
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
-```
+```text
 codeforces_bot/
 ├── bot.py                      # Entry point
 ├── config.py                   # Loads & validates .env
 ├── requirements.txt
-├── .env.example                # Copy → .env and fill in
+├── .env.example                # Copy to .env and fill in
 ├── .gitignore
 │
 ├── cogs/
 │   ├── codeforces_monitor.py   # Background polling loop
-│   └── slash_commands.py       # /next_contest, /ongoing, /help_cf
+│   └── slash_commands.py       # Slash commands definitions
 │
 ├── utils/
 │   ├── cf_api.py               # Async Codeforces API client
 │   ├── helpers.py              # Division detection, embeds, formatting
-│   └── store.py                # state.json read/write (no duplicate pings)
+│   └── store.py                # state.json read/write
 │
 └── data/
     └── state.json              # Auto-generated, tracks sent notifications
@@ -44,18 +44,18 @@ codeforces_bot/
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Step 1 — Create a Discord Bot Application
 
 1. Go to [discord.com/developers/applications](https://discord.com/developers/applications)
-2. Click **New Application** → give it a name (e.g. `CF Contest Bot`)
-3. Go to **Bot** → click **Reset Token** → copy the token
-4. Under **Privileged Gateway Intents**, turn off everything (we don't need them)
-5. Go to **OAuth2 → URL Generator**:
+2. Click **New Application** and give it a name (e.g., `CF Contest Bot`).
+3. Navigate to **Bot**, click **Reset Token**, and copy the token.
+4. Under **Privileged Gateway Intents**, disable all options as they are not required.
+5. Go to **OAuth2 > URL Generator**:
    - Scopes: `bot`, `applications.commands`
    - Bot Permissions: `Send Messages`, `Embed Links`, `View Channels`
-6. Open the generated URL in your browser and invite the bot to your server
+6. Open the generated URL in your browser and invite the bot to your server.
 
 ### Step 2 — Configure Environment Variables
 
@@ -71,8 +71,8 @@ NOTIFICATION_CHANNEL_ID=123456789012345678
 ```
 
 **How to get the Channel ID:**
-- Enable Developer Mode in Discord: *User Settings → Advanced → Developer Mode*
-- Right-click your notifications channel → **Copy ID**
+- Enable Developer Mode in Discord: *User Settings > Advanced > Developer Mode*
+- Right-click your notifications channel and select **Copy ID**.
 
 ### Step 3 — Install Dependencies
 
@@ -86,36 +86,31 @@ pip install -r requirements.txt
 python bot.py
 ```
 
-You should see:
-```
-2026-04-25 18:00:00  INFO      bot  Logged in as CF Contest Bot#1234 (ID: ...)
-2026-04-25 18:00:00  INFO      bot  Synced 3 slash command(s) globally.
-2026-04-25 18:00:00  INFO      ...  Contest monitor ready. Polling every 10 min...
-```
+You should see log output indicating that the bot has logged in, synced slash commands, and started the monitor.
 
-> **Note:** Slash commands can take up to **1 hour** to appear globally on first launch. To test immediately, use guild-scoped sync (see `bot.py` comments).
+> **Note:** Slash commands can take up to 1 hour to appear globally on first launch. To test immediately, use guild-scoped sync (see `bot.py` comments).
 
 ---
 
-## ⚙️ Configuration Reference
+## Configuration Reference
 
 | Variable | Required | Default | Description |
 |---|---|---|---|
-| `DISCORD_TOKEN` | ✅ | — | Your bot token |
-| `NOTIFICATION_CHANNEL_ID` | ✅ | — | Channel to post notifications |
-| `NOTIFY_BEFORE_MINUTES` | ❌ | `60` | Minutes before contest to warn |
-| `POLL_INTERVAL_MINUTES` | ❌ | `10` | How often to poll the CF API |
-| `ROLE_DIV1` | ❌ | — | Role ID to ping for Div. 1 |
-| `ROLE_DIV2` | ❌ | — | Role ID to ping for Div. 2 |
-| `ROLE_DIV3` | ❌ | — | Role ID to ping for Div. 3 |
-| `ROLE_DIV4` | ❌ | — | Role ID to ping for Div. 4 |
-| `ROLE_EDUCATIONAL` | ❌ | — | Role ID to ping for Educational |
-| `ROLE_GLOBAL` | ❌ | — | Role ID to ping for Global Rounds |
-| `ROLE_OTHER` | ❌ | — | Role ID for all other contests |
+| `DISCORD_TOKEN` | Yes | — | Your bot token |
+| `NOTIFICATION_CHANNEL_ID` | Yes | — | Channel to post notifications |
+| `NOTIFY_BEFORE_MINUTES` | No | `60` | Minutes before contest to warn |
+| `POLL_INTERVAL_MINUTES` | No | `10` | How often to poll the CF API |
+| `ROLE_DIV1` | No | — | Role ID to ping for Div. 1 |
+| `ROLE_DIV2` | No | — | Role ID to ping for Div. 2 |
+| `ROLE_DIV3` | No | — | Role ID to ping for Div. 3 |
+| `ROLE_DIV4` | No | — | Role ID to ping for Div. 4 |
+| `ROLE_EDUCATIONAL` | No | — | Role ID to ping for Educational |
+| `ROLE_GLOBAL` | No | — | Role ID to ping for Global Rounds |
+| `ROLE_OTHER` | No | — | Role ID for all other contests |
 
 ---
 
-## 📋 Slash Commands
+## Slash Commands
 
 | Command | Options | Description |
 |---|---|---|
@@ -125,7 +120,7 @@ You should see:
 
 ---
 
-## 🛡️ Edge Cases Handled
+## Edge Cases Handled
 
 | Scenario | How It's Handled |
 |---|---|
@@ -138,7 +133,7 @@ You should see:
 
 ---
 
-## ☁️ Deployment
+## Deployment
 
 ### Local (always-on)
 
@@ -147,14 +142,14 @@ Keep the terminal open, or use a process manager:
 # Windows — run as a background service with NSSM
 # https://nssm.cc/
 
-nssm install CodeforcesBot python a:\Devops_Thesis\codeforces_bot\bot.py
+nssm install CodeforcesBot python a:\codeforces_bot\bot.py
 nssm start CodeforcesBot
 ```
 
 ### VPS / Linux Server
 
 ```bash
-# Install deps in a venv
+# Install dependencies in a virtual environment
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -165,14 +160,14 @@ screen -S cfbot python bot.py
 
 ### Render.com (Free PaaS)
 
-1. Push this folder to a GitHub repository
-2. Create a new **Background Worker** on [render.com](https://render.com)
+1. Push this folder to a GitHub repository.
+2. Create a new **Background Worker** on [render.com](https://render.com).
 3. Set Build Command: `pip install -r requirements.txt`
 4. Set Start Command: `python bot.py`
-5. Add your `.env` values as Environment Variables in the Render dashboard
+5. Add your `.env` values as Environment Variables in the Render dashboard.
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Pull requests are welcome! The cog-based architecture makes it easy to add new features without touching existing code.
