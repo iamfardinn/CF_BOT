@@ -4,6 +4,7 @@ import sys
 import discord
 from discord.ext import commands
 import config
+import keep_alive
 
 logging.basicConfig(
     level=logging.INFO,
@@ -58,6 +59,7 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
+    keep_alive.keep_alive()
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
